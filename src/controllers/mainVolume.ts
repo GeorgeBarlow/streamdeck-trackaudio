@@ -8,8 +8,7 @@ import { MainVolumeSettings } from "@actions/mainVolume";
 import { stringOrUndefined } from "@utils/utils";
 
 const defaultConnectedTemplatePath = "images/actions/mainVolume/template.svg";
-const defaultNotConnectedTemplatePath =
-  "images/actions/mainVolume/template.svg";
+const defaultNotConnectedTemplatePath = "images/actions/mainVolume/template.svg";
 
 export class MainVolumeController extends BaseController {
   type = "MainVolumeController";
@@ -17,7 +16,7 @@ export class MainVolumeController extends BaseController {
   declare action: DialAction; // This ensures action from the base class is always a DialAction
 
   private _isConnected = false;
-  private _outputVolume? = 100;
+  private _volume? = 100;
   private _settings: StationVolumeSettings | null = null;
 
   private _connectedTemplatePath?: string;
@@ -74,19 +73,19 @@ export class MainVolumeController extends BaseController {
   /**
    * Gets the output volume. Returns 100 if undefined.
    **/
-  get outputVolume(): number {
-    return this._outputVolume ?? 100;
+  get volume(): number {
+    return this._volume ?? 100;
   }
 
   /**
    * Sets the output volume.
    **/
-  set outputVolume(newValue: number | undefined) {
-    if (this._outputVolume === newValue) {
+  set volume(newValue: number | undefined) {
+    if (this._volume === newValue) {
       return;
     }
 
-    this._outputVolume = newValue;
+    this._volume = newValue;
     this.refreshDisplay();
   }
 
@@ -147,14 +146,14 @@ export class MainVolumeController extends BaseController {
 
   override reset(): void {
     this._isConnected = false;
-    this._outputVolume = 100;
+    this._volume = 100;
 
     this.refreshDisplay();
   }
 
   private refreshImage(): void {
     const replacements = {
-      volume: this.outputVolume,
+      volume: this.volume,
     };
 
     if (this.isConnected) {
@@ -179,11 +178,11 @@ export class MainVolumeController extends BaseController {
           color: "#FFFFFF",
         },
         indicator: {
-          value: this.outputVolume,
+          value: this.volume,
           bar_fill_c: "#FFFFFF",
         },
         value: {
-          value: `${this.outputVolume.toString()}%`,
+          value: `${this.volume.toString()}%`,
           color: "#FFFFFF",
         },
       })
@@ -198,8 +197,6 @@ export class MainVolumeController extends BaseController {
  * @param action The action
  * @returns True if the action is a MainVolumeController
  */
-export function isMainVolumeController(
-  action: Controller
-): action is MainVolumeController {
+export function isMainVolumeController(action: Controller): action is MainVolumeController {
   return action.type === "MainVolumeController";
 }

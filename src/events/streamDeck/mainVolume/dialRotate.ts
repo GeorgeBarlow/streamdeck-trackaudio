@@ -8,19 +8,14 @@ import trackAudioManager from "@managers/trackAudio";
  * @param ticks The number of ticks the dial was rotated
  */
 export const handleDialRotate = (action: DialAction, ticks: number) => {
-  const savedAction = actionManager
-    .getMainVolumeControllers()
-    .find((entry) => entry.action.id === action.id);
+  const savedAction = actionManager.getMainVolumeControllers().find((entry) => entry.action.id === action.id);
 
   if (!savedAction) {
     return;
   }
 
   // Calculate the new volume level
-  const newVolume = Math.min(
-    100,
-    Math.max(0, savedAction.changeAmount * ticks)
-  );
+  const newVolume = Math.min(100, Math.max(-100, savedAction.changeAmount * ticks));
 
   // Set the volume
   trackAudioManager.sendMessage({

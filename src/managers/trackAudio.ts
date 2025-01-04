@@ -104,9 +104,7 @@ class TrackAudioManager extends EventEmitter {
 
     this.socket.on("error", (err: Error & { code: string }) => {
       if (err.code === "ECONNREFUSED") {
-        logger.debug(
-          "Unable to connect to TrackAudio, connection refused. TrackAudio probably isn't running."
-        );
+        logger.debug("Unable to connect to TrackAudio, connection refused. TrackAudio probably isn't running.");
       } else {
         logger.error("WebSocket error:", err.message);
       }

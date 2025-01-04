@@ -40,6 +40,9 @@ import { handleTxBegin } from "@events/trackAudio/txBegin";
 import { handleTxEnd } from "@events/trackAudio/txEnd";
 import { handleVatsimDataReceived } from "@events/vatsim/vatsimDataReceived";
 import { handleVoiceConnectedState } from "@events/trackAudio/voiceConnectedState";
+import { handleMainOutputVolumeChange } from "@events/trackAudio/mainOutputVolumeChange";
+import { handleMainStationVolumeAdded } from "@events/action/mainStationVolumeAdded";
+import { MainVolume } from "@actions/mainVolume";
 
 const logger = mainLogger.child({ service: "plugin" });
 
@@ -58,6 +61,7 @@ streamDeck.actions.registerAction(new PushToTalk());
 streamDeck.actions.registerAction(new StationStatus());
 streamDeck.actions.registerAction(new TrackAudioStatus());
 streamDeck.actions.registerAction(new StationVolume());
+streamDeck.actions.registerAction(new MainVolume());
 
 trackAudioManager.on("connected", () => {
   disconnectHandled = false;
@@ -83,19 +87,19 @@ trackAudioManager.on("voiceConnectedState", (data: VoiceConnectedState) => {
   });
 });
 
+trackAudioManager.on("mainOutputVolumeChange", handleMainOutputVolumeChange);
+
 actionManager.on("hotlineSettingsUpdated", handleHotlineSettingsUpdated);
 actionManager.on("removed", handleRemoved);
 actionManager.on("stationStatusAdded", handleStationStatusAdded);
-actionManager.on(
-  "stationStatusSettingsUpdated",
-  handleStationStatusSettingsUpdated
-);
+actionManager.on("stationStatusSettingsUpdated", handleStationStatusSettingsUpdated);
 actionManager.on("trackAudioStatusAdded", handleTrackAudioStatusAdded);
 actionManager.on("trackAudioStatusUpdated", handleTrackAudioStatusAdded);
 actionManager.on("atisLetterAdded", handleAtisLetterAdded);
 actionManager.on("atisLetterUpdated", handleAtisLetterUpdated);
 actionManager.on("actionAdded", handleActionAdded);
 actionManager.on("stationVolumeAdded", handleStationVolumeAdded);
+actionManager.on("mainOutputVolumeAdded", handleMainStationVolumeAdded);
 
 vatsimManager.on("vatsimDataReceived", handleVatsimDataReceived);
 

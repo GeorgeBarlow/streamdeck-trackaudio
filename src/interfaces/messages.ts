@@ -14,7 +14,7 @@ export interface VoiceConnectedState {
 export interface MainOutputVolumeChange {
   type: "kMainOutputVolumeChange";
   value: {
-    outputVolume: number;
+    volume: number;
   };
 }
 
@@ -28,9 +28,7 @@ export interface StationStates {
   };
 }
 
-export type StationStateUpdate =
-  | StationStateUpdateAvailable
-  | StationStateUpdateNotAvailable;
+export type StationStateUpdate = StationStateUpdateAvailable | StationStateUpdateNotAvailable;
 
 /**
  * Represents the kStationStateUpdate message from TrackAudio when avilable is true.
@@ -255,9 +253,7 @@ export type OutgoingMessage =
  * @param message The message
  * @returns True if the message is a VoiceConnected
  */
-export function isVoiceConnectedState(
-  message: IncomingMessage
-): message is VoiceConnectedState {
+export function isVoiceConnectedState(message: IncomingMessage): message is VoiceConnectedState {
   return message.type === "kVoiceConnectedState";
 }
 
@@ -266,9 +262,7 @@ export function isVoiceConnectedState(
  * @param message The message
  * @returns True if the message is a StationStateUpdate
  */
-export function isStationStateUpdate(
-  message: IncomingMessage
-): message is StationStateUpdate {
+export function isStationStateUpdate(message: IncomingMessage): message is StationStateUpdate {
   return message.type === "kStationStateUpdate";
 }
 
@@ -277,9 +271,7 @@ export function isStationStateUpdate(
  * @param message The message
  * @returns True if the message is a StationStateUpdate with isAvailable true.
  */
-export function isStationStateUpdateAvailable(
-  message: IncomingMessage
-): message is StationStateUpdateAvailable {
+export function isStationStateUpdateAvailable(message: IncomingMessage): message is StationStateUpdateAvailable {
   return (
     message.type === "kStationStateUpdate" &&
     // This is for backwards compatibility with older versions of TrackAudio
@@ -293,14 +285,8 @@ export function isStationStateUpdateAvailable(
  * @param message The message
  * @returns True if the message is a StationStateUpdate with isAvailable true.
  */
-export function isStationStateUpdateNotAvailable(
-  message: IncomingMessage
-): message is StationStateUpdateNotAvailable {
-  return (
-    message.type === "kStationStateUpdate" &&
-    message.value.isAvailable !== undefined &&
-    !message.value.isAvailable
-  );
+export function isStationStateUpdateNotAvailable(message: IncomingMessage): message is StationStateUpdateNotAvailable {
+  return message.type === "kStationStateUpdate" && message.value.isAvailable !== undefined && !message.value.isAvailable;
 }
 
 /**
@@ -308,9 +294,7 @@ export function isStationStateUpdateNotAvailable(
  * @param message The message
  * @returns True if the message is a StationAdded
  */
-export function isStationAdded(
-  message: IncomingMessage
-): message is StationAdded {
+export function isStationAdded(message: IncomingMessage): message is StationAdded {
   return message.type === "kStationAdded";
 }
 
@@ -319,9 +303,7 @@ export function isStationAdded(
  * @param message The message
  * @returns True if the message is a FrequencyRemoved
  */
-export function isFrequencyRemoved(
-  message: IncomingMessage
-): message is FrequencyRemoved {
+export function isFrequencyRemoved(message: IncomingMessage): message is FrequencyRemoved {
   return message.type === "kFrequencyRemoved";
 }
 
@@ -330,9 +312,7 @@ export function isFrequencyRemoved(
  * @param message The message
  * @returns True if the message is a StationStates
  */
-export function isStationStates(
-  message: IncomingMessage
-): message is StationStates {
+export function isStationStates(message: IncomingMessage): message is StationStates {
   return message.type === "kStationStates";
 }
 
@@ -372,8 +352,6 @@ export function isTxEnd(message: IncomingMessage): message is TxEnd {
   return message.type === "kTxEnd";
 }
 
-export function isMainOutputVolumeChange(
-  message: IncomingMessage
-): message is MainOutputVolumeChange {
+export function isMainOutputVolumeChange(message: IncomingMessage): message is MainOutputVolumeChange {
   return message.type === "kMainOutputVolumeChange";
 }

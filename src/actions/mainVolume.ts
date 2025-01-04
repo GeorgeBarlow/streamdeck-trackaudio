@@ -19,34 +19,26 @@ import { handleUpdateMainVolumeSettings } from "@events/streamDeck/mainVolume/up
  * Represents the volume of a TrackAudio station
  */
 export class MainVolume extends SingletonAction<MainVolumeSettings> {
-  debouncedUpdate = debounce(
-    (action: DialAction, settings: MainVolumeSettings) => {
-      handleUpdateMainVolumeSettings(action, settings);
-    },
-    300
-  );
+  debouncedUpdate = debounce((action: DialAction, settings: MainVolumeSettings) => {
+    handleUpdateMainVolumeSettings(action, settings);
+  }, 300);
 
-  override onWillAppear(
-    ev: WillAppearEvent<MainVolumeSettings>
-  ): Promise<void> | void {
+  override onWillAppear(ev: WillAppearEvent<MainVolumeSettings>): Promise<void> | void {
     // This should never happen. Typeguard to ensure the rest of the code can just use
     // DialAction.
     if (!ev.action.isDial()) {
+      console.log("Not a dial action"); // Add this to check if we're failing the type guard
       return;
     }
 
     handleAddMainVolume(ev.action, ev.payload.settings);
   }
 
-  override onDialRotate(
-    ev: DialRotateEvent<MainVolumeSettings>
-  ): Promise<void> | void {
+  override onDialRotate(ev: DialRotateEvent<MainVolumeSettings>): Promise<void> | void {
     handleDialRotate(ev.action, ev.payload.ticks);
   }
 
-  override onDidReceiveSettings(
-    ev: DidReceiveSettingsEvent<MainVolumeSettings>
-  ): Promise<void> | void {
+  override onDidReceiveSettings(ev: DidReceiveSettingsEvent<MainVolumeSettings>): Promise<void> | void {
     // This should never happen. Typeguard to ensure the rest of the code can just use
     // DialAction.
     if (!ev.action.isDial()) {
@@ -56,9 +48,7 @@ export class MainVolume extends SingletonAction<MainVolumeSettings> {
     this.debouncedUpdate(ev.action, ev.payload.settings);
   }
 
-  override onWillDisappear(
-    ev: WillDisappearEvent<MainVolumeSettings>
-  ): Promise<void> | void {
+  override onWillDisappear(ev: WillDisappearEvent<MainVolumeSettings>): Promise<void> | void {
     handleRemove(ev.action);
   }
 }

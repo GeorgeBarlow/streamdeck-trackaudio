@@ -9,13 +9,9 @@ import actionManager from "@managers/action";
  * @param action The action
  * @param settings The settings for the action
  */
-export const handleAddMainVolume = (
-  action: DialAction,
-  settings: MainVolumeSettings
-) => {
+export const handleAddMainVolume = (action: DialAction, settings: MainVolumeSettings) => {
   const controller = new MainVolumeController(action, settings);
-
   actionManager.add(controller);
-  actionManager.emit("stationVolumeAdded", controller);
+  actionManager.emit("mainOutputVolumeAdded", controller);
   actionManager.emit("actionAdded", controller);
 };
